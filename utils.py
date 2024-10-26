@@ -88,25 +88,36 @@ def find_changes(l_df_ce, l_df_pe, spot):
     ce_change = round(sum(l_df_ce['OICHANGE_Everyday']),2)  
     dic['CE_EOD'] = format_number_in_crores(ce_eod)
     dic['CE_CHANGE'] = format_number_in_crores(ce_change)
-    dic['CE_%CHANGE'] = round(ce_change/ce_eod,4)*100
-    
+    try:
+        dic['CE_%CHANGE'] = round(ce_change/ce_eod,4)*100
+    except Exception as e:
+        dic['CE_%CHANGE'] = 0
     
     itm_df = l_df_ce[l_df_ce['StrkPric']<spot]
     itm_eod = sum(itm_df['EOD'])
     
     dic['ITM_CE_EOD'] = format_number_in_crores(itm_eod)
-    dic['ITM_CE_%EOD'] = round(itm_eod/ce_eod,4)*100
+    try:
+        dic['ITM_CE_%EOD'] = round(itm_eod/ce_eod,4)*100
+    except Exception as e:
+        dic['ITM_CE_%EOD'] = 0
     
     itm_oi_change = round(sum(itm_df['OICHANGE_Everyday']),4)
     dic['ITM_CE_CHANGE'] = format_number_in_crores(itm_oi_change)
-    dic['ITM_CE_%CHANGE'] = round(itm_oi_change/itm_eod,4)*100
+    try:
+        dic['ITM_CE_%CHANGE'] = round(itm_oi_change/itm_eod,4)*100
+    except Exception as e:
+        dic['ITM_CE_%CHANGE'] = 0
 
     pe_eod = round(sum(l_df_pe['EOD']),2)
     pe_change = round(sum(l_df_pe['OICHANGE_Everyday']),2)  
 
     dic['PE_EOD'] = format_number_in_crores(pe_eod)
     dic['PE_CHANGE'] = format_number_in_crores(pe_change)
-    dic['PE_%CHANGE'] = round(pe_change/pe_eod,4)*100
+    try:
+        dic['PE_%CHANGE'] = round(pe_change/pe_eod,4)*100
+    except Exception as e:
+        dic['PE_%CHANGE'] = 0
     
     itm_df = l_df_pe[l_df_pe['StrkPric']>spot]
     itm_eod = sum(itm_df['EOD'])
@@ -115,7 +126,10 @@ def find_changes(l_df_ce, l_df_pe, spot):
     dic['ITM_PE_%EOD'] = round(itm_eod/pe_eod,4)*100
     itm_oi_change = round(sum(itm_df['OICHANGE_Everyday']),2)
     dic['ITM_PE_CHANGE'] = format_number_in_crores(itm_oi_change)
-    dic['ITM_PE_%CHANGE'] = round(itm_oi_change/itm_eod,4)*100
+    try:
+        dic['ITM_PE_%CHANGE'] = round(itm_oi_change/itm_eod,4)*100
+    except Exception as e:
+        dic['ITM_PE_%CHANGE'] = 0
     for key in dic:
         dic[key] = [dic[key]]
     l_df = pd.DataFrame(dic)
